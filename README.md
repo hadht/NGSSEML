@@ -22,7 +22,7 @@ Maintainer: T. R. Santos thiagords@est.ufmg.br
 
 Depends: R (>= 3.5.1).
 
-URL: https://github.com/hadht/NGSSEML-R-Package
+URL: https://github.com/hadht/NGSSEML
 Imports: 
     mvtnorm,
     fields,
