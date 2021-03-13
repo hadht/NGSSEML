@@ -38,6 +38,11 @@ install.packages("NGSSEML")
 
 Or
 
+install.packages("devtools")
+devtools::install_github("hadht/NGSSMEL")
+
+Or
+
 Essentially, you can install packages using utils by unzipping a local zipfile downloaded from github, 
 and then running  utils:::menuInstallLocal()
 
