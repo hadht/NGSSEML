@@ -1,0 +1,19 @@
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("NGSSEML")
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
+vers <- paste("version", meta$Version)
+
+citHeader("To cite 'NGSSMEL' in publications use:")
+
+citEntry(entry = "Manual",
+  title = "{NGSSEML}: Non-Gaussian state space models with exact marginal likelihood
+            package",
+  author = person("dos Santos", "T. R.", email = "thiagords@ufmg.br"),
+  year = year,
+  note = vers,
+  textVersion =
+  paste("dos Santos, T. R. (", year, "). ",
+        "NGSSEML: Non-Gaussian state space models with exact marginal likelihood
+            package. ",
+        "R package version ", vers, ". ", sep = "")
+)
+
