@@ -39,6 +39,7 @@ install.packages("NGSSEML")
 Or
 
 install.packages("devtools")
+
 devtools::install_github("hadht/NGSSMEL")
 
 Or
