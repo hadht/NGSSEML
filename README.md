@@ -10,7 +10,7 @@ Type: R Package.
 
 Title Non-Gaussian state space models with exact marginal likelihood.
 
-Version 2.1
+Version 2.2
 
 Date 2021-03-11.
 
