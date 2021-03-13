@@ -12,7 +12,7 @@ Title Non-Gaussian state space models with exact marginal likelihood.
 
 Version 2.1
 
-Date 2020-03-11.
+Date 2021-03-11.
 
 Authors: T. R. Santos, G. C. Franco, D. Gamerman.
 
