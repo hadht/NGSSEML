@@ -300,6 +300,7 @@ distl="PRED",splot=FALSE){
 				#Pred:
 				at[1] <- a0
 				bt[1] <- b0
+				btmu[1]<- b0
     #for(t in 2:(n+1)){
 
           if(model=="Poisson"){
@@ -557,6 +558,7 @@ distl="PRED",splot=FALSE){
         if(is.null(Xt)){
           mab[1,]=at
           mab[2,]=t(bt)
+          cat("mab=",mab)
         }else{
         mab[1,]=at
         mab[2,]=t(btmu)
@@ -687,7 +689,7 @@ set.seed(1000)
 				#Pred:
 				at[1] <- a0
 				bt[1] <- b0
-
+				btmu[1]<- b0
  				   if(model1=="Gamma"){
  				     if (min(Yt)<0)stop("Bad input Yt. Negative values.")
  				   if(is.null(Xt)){
@@ -858,7 +860,7 @@ set.seed(1000)
 				#Pred:
 				at[1] <- a0
 				bt[1] <- b0
-
+				btmu[1]<- b0
  				  
  				     if (min(Yt)<0)stop("Bad input Yt. Negative values.")
  				     if(is.null(Xt)){
