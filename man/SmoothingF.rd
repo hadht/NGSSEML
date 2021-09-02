@@ -131,56 +131,40 @@ The model options are the Poisson, Normal, Laplace, GED, Gamma, Weibull and Gene
 
 }
 \examples{
-################################################################################
-##
-## PEM Example: the GTE data 
-##
-################################################################################
-
-###############################################################################
-##
-## BAYESIAN ESTIMATION
-##
-###############################################################################
-
-###############################################################################
 ##PEM
 ##GTE Data
-###############################################################################
-#library(NGSSEML)
-### Inputs: 
 data(gte_data)
-Ytm=gte_data$V1
-Event=gte_data$V2   
-Breakm=NGSSEML:::GridP(Ytm, Event, nT = NULL)
-Xtm=NULL
-Ztm=NULL
-model="PEM"
-amp=FALSE
-LabelParTheta=c("w")
-StaPar=c(0.73)
+Ytm = gte_data$V1
+Event = gte_data$V2   
+Breakm = NGSSEML:::GridP(Ytm, Event, nT = NULL)
+Xtm = NULL
+Ztm = NULL
+model = "PEM"
+amp = FALSE
+LabelParTheta = c("w")
+StaPar = c(0.73)
+p = length(StaPar)
+nn = length(Breakm)
+a0 = 0.01
+b0 = 0.1
 p=length(StaPar)
-nn=length(Breakm)
-a0=0.01
-b0=0.1
-p=length(StaPar)
-pointss=5    ### points
-nsamplex=100 ## Multinomial sampling posterior
-ci=0.95
-alpha=1-ci
-#Fit:
-#Bayesian:
-fitbayes=ngssm.bayes(Ytm~Event,data=data.frame(Ytm,Event),model=model,
-pz=NULL,StaPar=StaPar,amp=amp,a0=a0,b0=b0,prw=c(1,1),prnu=NULL,prchi=NULL,
-prmu=NULL,prbetamu=NULL,prbetasigma=NULL,ci=ci,pointss=pointss,nsamplex=nsamplex,
-postplot=FALSE,contourplot=FALSE,LabelParTheta=LabelParTheta,verbose=TRUE)
-posts=fitbayes$samplepost
-#Smoothing:
+pointss = 4    ### points
+nsamplex = 50 ## Multinomial sampling posterior
+ci = 0.95
+alpha = 1-ci
+#Bayesian fit:
+fitbayes = ngssm.bayes(Ytm~Event, data = data.frame(Ytm, Event), model = model,
+pz = NULL, StaPar = StaPar, amp = amp, a0 = a0, b0 = b0, prw = c(1,1), 
+prnu = NULL, prchi = NULL, prmu = NULL, prbetamu = NULL, prbetasigma = NULL, 
+ci = ci, pointss = pointss, nsamplex = nsamplex, postplot = FALSE, 
+contourplot = FALSE, LabelParTheta = LabelParTheta, verbose = TRUE)
+posts = fitbayes$samplepost
+#Smoothing
 set.seed(1000)
-fits=SmoothingF(Ytm~Event,data=data.frame(Ytm,Event),model=model,pz=NULL,
-StaPar=posts,Type="Marg",a0=a0,b0=b0,ci=ci,samples=1,splot=FALSE)
+fits = SmoothingF(Ytm~Event, data = data.frame(Ytm, Event), model = model, 
+pz = NULL, StaPar = posts, Type = "Marg", a0 = a0, b0 = b0, ci = ci, 
+samples = 1, splot = FALSE)
 ###############################################################################
- 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -117,13 +117,13 @@ The model options are the Poisson, Normal, Laplace, GED, Gamma, Weibull and Gene
 }
 \examples{
 library(NGSSEML)
-Yt=c(1,2,1,4,3)
-Par=c(0.9) #w
-predpar=FilteringF(Yt~1,data=data.frame(Yt),StaPar=Par,model="Poisson",
-a0=0.01,b0=0.01,splot=FALSE)
-filpar=FilteringF(Yt~1,data=data.frame(Yt),StaPar=Par,model="Poisson",
-a0=0.01,b0=0.01,distl="FILTER",splot=FALSE)
+Yt = c(1,2,1,4,3)
+Par = c(0.9) #w
+predpar = FilteringF(Yt~1, data = data.frame(Yt), StaPar = Par, model = "Poisson",
+a0 = 0.01, b0 = 0.01, splot = FALSE)
 
+filpar = FilteringF(Yt~1, data = data.frame(Yt), StaPar = Par, model = "Poisson",
+a0 = 0.01, b0 = 0.01, distl = "FILTER", splot = FALSE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

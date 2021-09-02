@@ -20,7 +20,7 @@ ngssm.bayes<-function(formula, data,
 prbetasigma=NULL,lower=NULL,upper=NULL,ci=0.95,
 pointss=10,nsamplex=1000,mcmc=NULL,postplot=FALSE,contourplot=FALSE,LabelParTheta=NULL,verbose=FALSE){
 #Begin ngssm.bayes
-  if(model=="Laplace")stop("Sorry! The model is not avaliable for this version of the package!")
+
 
 #Dataframe data
 #Dataframe data
@@ -704,16 +704,7 @@ if(is.null(upper)&&is.null(lower)){   # end limits
 #############################
 ###GRID 
 #############################
-  if (model=="Normal"||model=="Laplace"){
-  nn=length(Yt)
-  resultsopt=NA
-  resultsopt=tryCatch(optim(StaPar1, hessian=TRUE,LikeF2,
-                            #lower=lower,upper=upper,
-                            method="L-BFGS-B",na.action=na.action,Yt=Yt,Xt=Xt,Zt=Zt,Break=Break,Event=Event,
-                            a0=a0,b0=b0,model=model,lower=lower,upper=upper,control = list(maxit = 30000, temp = 2000,
-                                                                   trace = FALSE,REPORT = 500)), error = c)
-  if(resultsopt$convergence!=0)stop("Convergence error! Bad inputs! Sorry!")
-  }else{ 
+
 nn=length(Yt)
 resultsopt=NA
 resultsopt=tryCatch(optim(StaPar1, hessian=TRUE,LikeF2,
@@ -722,13 +713,10 @@ method="BFGS",na.action=na.action,Yt=Yt,Xt=Xt,Zt=Zt,Break=Break,Event=Event,
 a0=a0,b0=b0,model=model,control = list(maxit = 30000, temp = 2000,
 trace = FALSE,REPORT = 500)), error = c)
 if(resultsopt$convergence!=0)stop("Convergence error! Bad inputs! Sorry!")
-}
 estopt=resultsopt$par     # Point Estimates:
 estopt
-
 Hessianmatrixopt=-resultsopt$hessian   #Hessian Matrix
 Hessianmatrixopt
-#print(Hessianmatrixopt)
 MIFopt=-solve(Hessianmatrixopt)       #MIF
 MIFopt
 MIFopt[1,1]=MIFopt[1,1]*(((exp(-exp(estopt[1])))*(-exp(estopt[1])))^2)
@@ -1442,12 +1430,9 @@ estoptc<-mfit[,1]
 if(is.null(LabelParTheta)){names(estoptc)=paste0(c('\u03b8'),1:p)}else{names(estoptc)=LabelParTheta}
 obj$coefficients<-list("Mean.Post",estoptc)
 obj$data<-data
-#MeanSmooth=SmoothingF(formula=formula,data=data,model=model,
-           #           a0=a0,b0=b0,pz=pz,Type="Marg",amp=amp,samples=1,ci=ci,splot=FALSE,StaPar=ngssm.list[[2]])
-#aaff<-MeanSmooth[[1]][,1]
 MeanSmooth=SmoothingF(formula=formula,data=data,model=model,
-                      a0=a0,b0=b0,pz=pz,Type="Cond",amp=amp,samples=100,ci=ci,splot=FALSE,StaPar=estoptc)
-aaff<-MeanSmooth$Mean
+                      a0=a0,b0=b0,pz=pz,Type="Marg",amp=amp,samples=1,ci=ci,splot=FALSE,StaPar=ngssm.list[[2]])
+aaff<-MeanSmooth[[1]][,1]
 nnpp<-nn
 if(model=="PEM"){nnpp<-length(Break)-1}
 names(aaff)<-1:nnpp
@@ -3328,12 +3313,9 @@ message("End!")
   if(is.null(LabelParTheta)){names(estoptc)=paste0(c('\u03b8'),1:p)}else{names(estoptc)=LabelParTheta}
   obj$coefficients<-list("Mean.Post",estoptc)
   obj$data<-data
- # MeanSmooth=SmoothingF(formula=formula,data=data,model=model,
-  #                      a0=a0,b0=b0,pz=pz,Type="Marg",amp=amp,samples=1,nBreaks=nBreaks,ci=ci,splot=FALSE,StaPar=ngssm.list[[2]])
-  #aaff<-MeanSmooth[[1]][,1]
   MeanSmooth=SmoothingF(formula=formula,data=data,model=model,
-                        a0=a0,b0=b0,pz=pz,Type="Cond",amp=amp,samples=100,nBreaks=nBreaks,ci=ci,splot=FALSE,StaPar=estoptc)
-  aaff<-MeanSmooth$Mean
+                        a0=a0,b0=b0,pz=pz,Type="Marg",amp=amp,samples=1,nBreaks=nBreaks,ci=ci,splot=FALSE,StaPar=ngssm.list[[2]])
+  aaff<-MeanSmooth[[1]][,1]
   nnpp<-nn
   #print(nnpp)
   if(model=="PEM"){nnpp<-length(Break)-1}

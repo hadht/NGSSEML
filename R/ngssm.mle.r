@@ -107,12 +107,11 @@ ngssm.mle<-function(formula, data,
   Yt<-Y
   Xt<-X
   Zt<-Z
- #  print(Yt)
- #  print(Xt)
- # print(Zt)
-  # print(Event)
+  # print(Yt)
+  #  print(Xt)
+  #  print(Zt)
+  #  print(Event)
   #  print(Break)
-  #  print(StaPar)
   
   ###################################################################################
   ###################################################################################
@@ -269,7 +268,6 @@ ngssm.mle<-function(formula, data,
         
       }
       if (model=="Normal"){  #Begin Normal
-      #  print(Yt);print(Xt);print(Zt)
         if(is.null(Xt) && is.null(Zt)){
           LabelParTheta=c("w")
         }
@@ -299,7 +297,7 @@ ngssm.mle<-function(formula, data,
           LabelParTheta[2:(pp+1)]=LabelBeta[1:(pp)]
           LabelParTheta[(pp+2):(pp+1+ppp)]=LabelDelta[1:(ppp)]
         }
-       #print(LabelParTheta) 
+        
       }#EndNormal
       if (model=="Laplace"){  #Begin Laplace
         if(is.null(Xt) && is.null(Zt)){
@@ -410,7 +408,6 @@ ngssm.mle<-function(formula, data,
     }
     # If default of StaPar is true, initialize StaPar.  
     #Begin Default StarPar
-    #print(StaPar)
     if(is.null(StaPar)==FALSE){
       StaPar1=StaPar;
       StaPar1[1]=log(-log(StaPar[1]));
@@ -422,8 +419,7 @@ ngssm.mle<-function(formula, data,
         StaPar1[2]=log(StaPar[2]);StaPar1[3]=log(StaPar[3]);
       };
     };
-  #  print(StaPar)
- #   print(StaPar1)
+    
     if(is.null(StaPar)){
       if (model=="Poisson"){ #Begin Poisson
         ##StaPar:
@@ -454,7 +450,7 @@ ngssm.mle<-function(formula, data,
         if(is.null(Zt)){dzt=0}else{dzt=dim(Zt)[2];}
         p=(1+dxt+dzt);
         StaPar=numeric(p);StaPar1=StaPar;
-        StaPar1[1]=log(-log(StaPar[1]));if(dxt>0){StaPar[2:(dxt+1)]=rep(0,dxt);};if(dzt>0){StaPar[(dxt+1):(dxt+1+dzt)]=rep(0,dzt);};
+        StaPar[1]=((0.9));StaPar1[1]=log(-log(StaPar[1]));if(dxt>0){StaPar[2:(dxt+1)]=rep(0,dxt);};if(dzt>0){StaPar[(dxt+1):(dxt+1+dzt)]=rep(0,dzt);};
         ##lower:
         if(is.null(lower)){
           lower=numeric(p);
@@ -469,7 +465,6 @@ ngssm.mle<-function(formula, data,
           bumu=100;
           upper[1]=0.999;if(dxt>0){upper[2:(dxt+1)]=rep(bumu,dxt);};if(dzt>0){upper[(dxt+1):(dxt+1+dzt)]=rep(bumu,dzt);};
         };
-       # print(StaPar);print(StaPar1)
       }#End Normal
       
       if (model=="Laplace"){  #Begin Laplace
@@ -478,7 +473,7 @@ ngssm.mle<-function(formula, data,
         if(is.null(Zt)){dzt=0}else{dzt=dim(Zt)[2];}
         p=(1+dxt+dzt);
         StaPar=numeric(p);StaPar1=StaPar;
-        StaPar1[1]=log(-log(StaPar[1]));if(dxt>0){StaPar[2:(dxt+1)]=rep(0,dxt);};if(dzt>0){StaPar[(dxt+1):(dxt+1+dzt)]=rep(0,dzt);};
+        StaPar[1]=((0.9));StaPar1[1]=log(-log(StaPar[1]));if(dxt>0){StaPar[2:(dxt+1)]=rep(0,dxt);};if(dzt>0){StaPar[(dxt+1):(dxt+1+dzt)]=rep(0,dzt);};
         ##lower:
         if(is.null(lower)){
           lower=numeric(p);
@@ -599,7 +594,6 @@ ngssm.mle<-function(formula, data,
     }
     #print(StaPar1)
     if(verbose) cat("\n*****Non-Gaussian State Space Models with Exact Likelihood*****\n","\nNGSSEML Package:","MLE -",model,"\n")
-   # print(StaPar1);
     resultsopt=NA
     resultsopt=tryCatch(optim(StaPar1, hessian=hessian,LikeF2,
                               method=method,na.action=na.action,Yt=Yt,Xt=Xt,Zt=Zt,Break=Break,Event=Event,
@@ -719,7 +713,7 @@ ngssm.mle<-function(formula, data,
     obj$data<-data
     #print(estopt)
     MeanSmooth=SmoothingF(formula=formula,data=data,model=model,
-                          a0=a0,b0=b0,amp=amp,samples=300,ci=ci,splot=FALSE,StaPar=estopt)
+                          a0=a0,b0=b0,amp=amp,samples=3000,ci=ci,splot=FALSE,StaPar=estopt)
     obj$fitted.values<-MeanSmooth$Mean # FilteringF function
     obj$y<-obj$fitted.values
     #names(obj$y)<-c("Smoothed estimates")
@@ -919,7 +913,7 @@ ngssm.mle<-function(formula, data,
     obj$coefficients<-estopt
     obj$data<-data
     MeanSmooth=SmoothingF(formula=formula,data=data,model=model,
-                          a0=a0,b0=b0,amp=amp,samples=500,ci=ci,splot=FALSE,StaPar=estopt)
+                          a0=a0,b0=b0,amp=amp,samples=3000,ci=ci,splot=FALSE,StaPar=estopt)
     obj$fitted.values<-MeanSmooth$Mean # FilteringF function
     obj$y<-obj$fitted.values
     #names(obj$y)<-c("Smoothed estimates")
@@ -1094,12 +1088,15 @@ ngssm.mle<-function(formula, data,
     pnn<-length(obj$fitted.values)
     obj$x<-1:pnn
     #names(obj$x)<-c("Order obs.")
-    obj$summary<-list(cat("\n*****Non-Gaussian State Space Models with Exact Likelihood*****\n","\nNGSSEML Package:","MLE -",model,"\n"),ngssm.list) #colocar a lista que criei de output
+    #obj$summary<-list(cat("\n*****Non-Gaussian State Space Models with Exact Likelihood*****\n","\nNGSSEML Package:","MLE -",model,"\n"),ngssm.list) #colocar a lista que criei de output
+    obj$summary<-ngssm.list #colocar a lista que criei de output
     class(obj) = "ngssm.mle"
+    ob<-ngssm.list[[1]]; 
+    class(ob) = "ngssm.mle"
+    if(verbose==TRUE) {obj<-obj}else{obj<-ob}
     return(obj) 
     
   }
-  
   
   #return(ngssm.list)
   

@@ -4,11 +4,7 @@
 #' @param ... ignored
 #'@noRd
 summary.ngssm.bayes<- function(object,...){
-  if(is.matrix(object)){
-    objecta <-object
-  }else{
-    objecta <-object$summary 
-  }
+   objecta <-object$summary
    class(objecta) = "ngssm.bayes"
   return(objecta)
 }

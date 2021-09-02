@@ -159,38 +159,39 @@ The model options are the Poisson, Normal, Laplace, GED, Gamma, Weibull and Gene
 ###############################################################################
 ## Petro data:
 library(NGSSEML)
-#### Inputs: 
+## Inputs: 
 data(Return_data)
-Ytm=Return_data$Rt
-Date=Return_data$Date
-Xtm=NULL
-Ztm=NULL
-model="GED"
-LabelParTheta=c("W","nu")
-StaPar=c(0.9,1)
-p=length(StaPar)
-nn=length(Ytm)
-a0=0.01
-b0=0.01
-pointss= 4   ### points
-nsamplex=25 ## Sampling posterior
-ci=0.95       # Cred. level
-fitbayes<-ngssm.bayes(Ytm~1,data=data.frame(Ytm),model=model,pz=NULL,
-StaPar=StaPar,a0=a0,b0=b0,prw=c(1,1),
-prnu=c(0.01,0.01),ci=ci,pointss=pointss,nsamplex=nsamplex,
-postplot=FALSE,contourplot=FALSE,LabelParTheta=LabelParTheta,verbose=TRUE)
-#postaux<-fitbayes$samplepost[,]
-posts<-fitbayes$samplepost
-############
-#Smoothing:
-############
-#PlotF function:
-PlotF(Ytm~1,data=data.frame(Ytm),model=model,pz=NULL,plotYt=FALSE,
-transf=-0.5,Proc="Smooth",Type="Marg",distl="PRED",a0=a0,b0=b0,
-ci=ci,posts=posts,startdate=NULL,enddate=NULL,Freq="days",typeline='l',
-col=c("black","blue","lightgrey"),xlab="t",ylab=expression(paste(hat(sigma)[t])),xlim=NULL,
-ylim=c(0.02,0.10),lty=c(1,2,1),lwd=c(2,2,2),cex=0.68)
-# dev.new()
+Ytm = Return_data$Rt
+Ytm = Ytm[1:200]
+Date = Return_data$Date
+Xtm = NULL
+Ztm = NULL
+model = "GED"
+LabelParTheta = c("W", "nu")
+StaPar=c(0.9, 1)
+p = length(StaPar)
+nn = length(Ytm)
+a0 = 0.01
+b0  = 0.01
+pointss = 4   ### points
+nsamplex = 50 ## Sampling posterior
+ci = 0.95       # Cred. level
+fitbayes=ngssm.bayes(Ytm~1, data = data.frame(Ytm), model = model, pz = NULL,
+StaPar = StaPar, a0 = a0, b0 = b0, prw = c(1, 1), prnu = c(0.01, 0.01), 
+ci = ci, pointss = pointss, nsamplex = nsamplex, postplot = FALSE, 
+contourplot = FALSE, LabelParTheta = LabelParTheta, verbose = TRUE)
+#postaux = fitbayes$samplepost[,]
+posts = fitbayes$samplepost
+
+##Smoothing
+##PlotF function
+
+#PlotF(Ytm~1, data = data.frame(Ytm), model = model, pz = NULL, plotYt = FALSE,
+#transf = -0.5, Proc = "Smooth", Type = "Marg", distl = "PRED", a0 = a0, b0 = b0,
+#ci = ci, posts = posts, startdate = NULL, enddate = NULL, Freq = "days", 
+#typeline = 'l', col = c("black", "blue", "lightgrey"), xlab = "t", ylab = 
+#expression(paste(hat(sigma)[t])), xlim = NULL, ylim = c(0.02, 0.10), 
+#lty = c(1, 2,1), lwd = c(2, 2, 2), cex = 0.68)
 ###############################################################################
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

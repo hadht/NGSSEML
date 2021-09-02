@@ -231,144 +231,108 @@ on.exit(options(oldoptions))
            }
  
  	 				   if(model=="Normal"){
- 	 				      if(is.null(Xt)){
- 	 				       #		  at[1]    <- 1/((1-StaPar[1])*StaPar[2])
- 	 				       #	    bt[1]    <- StaPar[1]/(StaPar[1]*StaPar[2]+abs(StaPar[1]-1)*(StaPar[2]^2)
- 	 				    #   at[1]    <- a0
- 	 				     #  bt[1]    <- b0
- 	 				       for(t in 2:(n+1)){  #begin for t
- 	 				         att[t-1] <- StaPar[1]*at[t-1]
- 	 				         btt[t-1] <- StaPar[1]*bt[t-1]
- 	 				         psi   <- ((gamma(3/2))/gamma(1/2))^(2/2)
- 	 				         at[t] <- att[t-1]+(1/2)
- 	 				         if(is.null(Zt)){
- 	 				           bt[t] <- btt[t-1]+((abs(Yt[t-1]))^2)*psi
- 	 				           # NORMAL
- 	 				           jt=t-1 
- 	 				           # for(t in 1:n){
- 	 				           l[jt] <- lgamma((1/2 + att[jt])) +
- 	 				             log(2/2) + ((1/2)*lgamma((3/2))-(3/2)*lgamma((1/2)) +
- 	 				                           att[jt] * log(btt[jt]) -lgamma(att[jt])) - (1/2 + att[jt]) * (log(((abs(Yt[jt]))^2)*psi + btt[jt]))
- 	 				           #          }
- 	 				         }else{  
- 	 				           bt[t] <- btt[t-1]+((abs(Yt[t-1]-(0)))^2)*psi   
- 	 				           # NORMAL
- 	 				           jt=t-1 
- 	 				           #dteta=dim((Zt))[2]
- 	 				           if(dteta==0){tt=1}else{tt=1:dteta}
- 	 				           #      for(t in 1:n){
- 	 				           l[jt] <- lgamma((1/2 + att[jt])) +
- 	 				             log(2/2) + ((1/2)*lgamma((3/2))-(3/2)*lgamma((1/2)) +
- 	 				                           att[jt] * log(btt[jt]) -lgamma(att[jt])) - (1/2 + att[jt]) * (log(((abs(Yt[jt]-(Zt[jt,tt]%*%Teta)))^2)*psi + btt[jt]))
- 	 				           #  }  
- 	 				         }
- 	 				         
- 	 				       }  #end for t
- 	 				     }else{
- 	 				       #   at[1]    <- 1/((1-StaPar[1])*2)
- 	 				       #bt[1]    <- StaPar[1]/(StaPar[1]*2+abs(StaPar[1]-1)*(2^2))
- 	 				    #   at[1]    <- a0
- 	 				    #   bt[1]    <- b0
- 	 				       for(t in 2:(n+1)){  #begin for t
- 	 				         att[t-1] <- StaPar[1]*at[t-1]
- 	 				         btt[t-1] <- StaPar[1]*bt[t-1]*exp(-(Xt[t-1,1:dbeta]%*%Beta))
- 	 				         psi   <- ((gamma(3/2))/gamma(1/2))^(2/2)
- 	 				         at[t] <- att[t-1]+(1/2)
- 	 				         if(is.null(Zt)){
- 	 				           bt[t] <- StaPar[1]*bt[t-1]+(((abs(Yt[t-1]))^2)*psi)*exp((Xt[t-1,1:dbeta]%*%Beta))
- 	 				           # NORMAL
- 	 				           jt=t-1 
- 	 				           # for(t in 1:n){
- 	 				           l[jt] <- lgamma((1/2 + att[jt])) +
- 	 				             log(2/2) + ((1/2)*lgamma((3/2))-(3/2)*lgamma((1/2)) +
- 	 				                           att[jt] * log(btt[jt]) -lgamma(att[jt])) - (1/2 + att[jt]) * (log(((abs(Yt[jt]))^2)*psi + btt[jt]))
- 	 				           #          }
- 	 				         }else{
- 	 				           if(dteta==0){tt=1}else{tt=1:dteta}
- 	 				           bt[t] <- StaPar[1]*bt[t-1]+(((abs(Yt[t-1]-(Zt[t-1,tt]%*%Teta)))^2)*psi)*exp((Xt[t-1,1:dbeta]%*%Beta))
- 	 				           # NORMAL
- 	 				           jt=t-1 
- 	 				           #dteta=dim((Zt))[2]
- 	 				           if(dteta==0){tt=1}else{tt=1:dteta}
- 	 				           #      for(t in 1:n){
- 	 				           l[jt] <- lgamma((1/2 + att[jt])) +
- 	 				             log(2/2) + ((1/2)*lgamma((3/2))-(3/2)*lgamma((1/2)) +
- 	 				                           att[jt] * log(btt[jt]) -lgamma(att[jt])) - (1/2 + att[jt]) * (log(((abs(Yt[jt]-(Zt[jt,tt]%*%Teta)))^2)*psi + btt[jt]))
- 	 				           #  }
- 	 				         }    
- 	 				       }  #end for t
- 	 				     } 
+ 				   if(is.null(Xt)){
+  				  for(t in 2:(n+1)){ #begin for t
+  				   att[t-1] <- StaPar[1]*at[t-1]
+    				 btt[t-1] <- StaPar[1]*bt[t-1]
+    				 at[t] <- att[t-1]+(1/2)
+   				   if(is.null(Zt)){
+   				   bt[t] <- btt[t-1]+(Yt[t-1]^2)/2
+   				   # Normal
+				     jt=t-1  
+   				   # for(t in 1:n){
+				     l[t] <- lgamma((0.5 + att[t])) - 0.5*log(2*3.1428) 
+             +att[t] * log(btt[t])-lgamma(att[t])- (0.5 + att[t])*(log(0.5*((Yt[t])^2) + btt[t]))
+            #} #end for t
+ 				     }else{
+					   if(dteta==0){tt=1}else{tt=1:dteta}
+  				   bt[t] <- btt[t-1]+(((Yt[t-1]-(Zt[t-1,tt]%*%Teta))^2)/2)
+  				   # Normal
+				     jt=t-1  
+            dteta=dim((Zt))[2]
+            if(dteta==0){tt=1}else{tt=1:dteta}
+            #for(t in 1:n){
+				     l[jt] <- lgamma((0.5 + att[jt])) - 0.5*log(2*3.1428) +att[jt] * log(btt[jt])
+             -lgamma(att[jt])- (0.5 + att[jt])*(log(0.5*((Yt[jt]-(Zt[jt,tt]%*%Teta))^2) + btt[jt]))
+            #} #end for t
+           }
+         }    
+        }else{
+					   for(t in 2:(n+1)){ #begin for t
+  				     att[t-1] <- StaPar[1]*at[t-1]
+    				   btt[t-1] <- StaPar[1]*bt[t-1]*exp(-(Xt[t-1,1:dbeta]%*%Beta))
+    				   at[t] <- att[t-1]+(1/2)
+     				   if(is.null(Zt)){ 
+               bt[t] <- StaPar[1]*bt[t-1]+((Yt[t-1]^2)/2)*exp((Xt[t-1,1:dbeta]%*%Beta)) 
+            # Normal
+	           jt=t-1 
+             #for(t in 1:n){
+				     l[jt] <- lgamma((0.5 + att[jt])) - 0.5*log(2*3.1428) +att[jt] * log(btt[jt])
+             -lgamma(att[jt])- (0.5 + att[jt])*(log(0.5*((Yt[jt])^2) + btt[jt]))
+               #} #end for t
+    #        cat("\nte=",btt)   
+               }else{
+   					   if(dteta==0){tt=1}else{tt=1:dteta}
+					     bt[t] <- StaPar[1]*bt[t-1]+(((Yt[t-1]-(Zt[t-1,tt]%*%Teta))^2)/2)*exp((Xt[t-1,1:dbeta]%*%Beta))
+					     # Normal
+				       jt=t-1 
+            dteta=dim((Zt))[2]
+            if(dteta==0){tt=1}else{tt=1:dteta}
+            #for(t in 1:n){
+				     l[jt] <- lgamma((0.5 + att[jt])) - 0.5*log(2*3.1428) +att[jt] * log(btt[jt])
+             -lgamma(att[jt])- (0.5 + att[jt])*(log(0.5*((Yt[jt]-(Zt[jt,tt]%*%Teta))^2) + btt[jt]))
+            #} #end for t
+         }  
+     } #end for t     
+     } 
    }
    	       if(model=="Laplace"){
-   	         if(is.null(Xt)){
-   	           #		  at[1]    <- 1/((1-StaPar[1])*StaPar[2])
-   	           #	    bt[1]    <- StaPar[1]/(StaPar[1]*StaPar[2]+abs(StaPar[1]-1)*(StaPar[2]^2)
-   	         #  at[1]    <- a0
-   	         #  bt[1]    <- b0
-   	           for(t in 2:(n+1)){  #begin for t
-   	             att[t-1] <- StaPar[1]*at[t-1]
-   	             btt[t-1] <- StaPar[1]*bt[t-1]
-   	             psi   <- ((gamma(3/1))/gamma(1/1))^(1/2)
-   	             at[t] <- att[t-1]+(1/1)
-   	             if(is.null(Zt)){
-   	               bt[t] <- btt[t-1]+((abs(Yt[t-1]))^1)*psi
-   	               # Laplace
-   	               jt=t-1 
-   	               # for(t in 1:n){
-   	               l[jt] <- lgamma((1/1 + att[jt])) +
-   	                 log(1/2) + ((1/2)*lgamma((3/1))-(3/2)*lgamma((1/1)) +
-   	                               att[jt] * log(btt[jt]) -lgamma(att[jt])) - (1/1 + att[jt]) * (log(((abs(Yt[jt]))^1)*psi + btt[jt]))
-   	               #print(l[jt])
-   	               #          }
-   	             }else{  
-   	               bt[t] <- btt[t-1]+((abs(Yt[t-1]-(0)))^1)*psi   
-   	               # Laplace
-   	               jt=t-1 
-   	               #dteta=dim((Zt))[2]
-   	               if(dteta==0){tt=1}else{tt=1:dteta}
-   	               #      for(t in 1:n){
-   	               l[jt] <- lgamma((1/1 + att[jt])) +
-   	                 log(1/2) + ((1/2)*lgamma((3/1))-(3/2)*lgamma((1/1)) +
-   	                               att[jt] * log(btt[jt]) -lgamma(att[jt])) - (1/1 + att[jt]) * (log(((abs(Yt[jt]-(Zt[jt,tt]%*%Teta)))^1)*psi + btt[jt]))
-   	               #  }  
-   	             }
-   	             
-   	           }  #end for t
-   	         }else{
-   	           # at[1]    <- 1/((1-StaPar[1])*StaPar[2])
-   	           #  bt[1]    <- StaPar[1]/(StaPar[1]*StaPar[2]+abs(StaPar[1]-1)*(StaPar[2]^2))
-   	          # at[1]    <- a0
-   	        #   bt[1]    <- b0
-   	           for(t in 2:(n+1)){  #begin for t
-   	             att[t-1] <- StaPar[1]*at[t-1]
-   	             btt[t-1] <- StaPar[1]*bt[t-1]*exp(-(Xt[t-1,1:dbeta]%*%Beta))
-   	             psi   <- ((gamma(3/1))/gamma(1/1))^(1/2)
-   	             at[t] <- att[t-1]+(1/1)
-   	             if(is.null(Zt)){
-   	               bt[t] <- StaPar[1]*bt[t-1]+(((abs(Yt[t-1]))^1)*psi)*exp((Xt[t-1,1:dbeta]%*%Beta))
-   	               # Laplace
-   	               jt=t-1 
-   	               # for(t in 1:n){
-   	               l[jt] <- lgamma((1/1 + att[jt])) +
-   	                 log(1/2) + ((1/2)*lgamma((3/1))-(3/2)*lgamma((1/1)) +
-   	                               att[jt] * log(btt[jt]) -lgamma(att[jt])) - (1/1 + att[jt]) * (log(((abs(Yt[jt]))^1)*psi + btt[jt]))
-   	               #          }
-   	             }else{
-   	               if(dteta==0){tt=1}else{tt=1:dteta}
-   	               bt[t] <- StaPar[1]*bt[t-1]+(((abs(Yt[t-1]-(Zt[t-1,tt]%*%Teta)))^1)*psi)*exp((Xt[t-1,1:dbeta]%*%Beta))
-   	               # Laplace
-   	               jt=t-1 
-   	               #dteta=dim((Zt))[2]
-   	               if(dteta==0){tt=1}else{tt=1:dteta}
-   	               #      for(t in 1:n){
-   	               l[jt] <- lgamma((1/1 + att[jt])) +
-   	                 log(1/2) + ((1/2)*lgamma((3/1))-(3/2)*lgamma((1/1)) +
-   	                               att[jt] * log(btt[jt]) -lgamma(att[jt])) - (1/1 + att[jt]) * (log(((abs(Yt[jt]-(Zt[jt,tt]%*%Teta)))^1)*psi + btt[jt]))
-   	               
-   	               #  }
-   	             }    
-   	           }  #end for t
-   	         }
+   	       if(is.null(Xt)){
+      	    for(t in 2:(n+1)){   #begin for t
+      	     att[t-1] <- StaPar[1]*at[t-1]
+    				 btt[t-1] <- StaPar[1]*bt[t-1]
+    				 at[t] <- att[t-1]+(1)
+    				 if(is.null(Zt)){
+					   bt[t] <- btt[t-1]+sqrt(2)*abs(Yt[t-1])
+					    # Laplace
+				     jt=t-1 
+				     l[jt] <- lgamma(att[jt]+1) + log(1/sqrt(2)) + att[jt] * log(btt[jt])
+             -lgamma(att[jt])- (1 + att[jt])*(log(sqrt(2)*abs(Yt[jt]) + btt[jt]))
+				      }else{ 
+					    if(dteta==0){tt=1}else{tt=1:dteta}
+              bt[t] <- btt[t-1]+sqrt(2)*abs(Yt[t-1]-(Zt[t-1,tt]%*%Teta))
+               # Laplace
+				     jt=t-1 
+				       dteta=dim((Zt))[2]
+              if(dteta==0){tt=1}else{tt=1:dteta}
+             l[jt] <- lgamma(att[jt]+1) + log(1/sqrt(2)) + att[jt] * log(btt[jt])-lgamma(att[jt])
+              - (1 + att[jt])*(log(sqrt(2)*abs(Yt[jt]-(Zt[jt,tt]%*%Teta)) + btt[jt]))
+             }     
+					  } #end for t
+					  }else{
+					   for(t in 2:(n+1)){   #begin for t
+      	      att[t-1] <- StaPar[1]*at[t-1]
+    				  btt[t-1] <- StaPar[1]*bt[t-1]*exp(-(Xt[t-1,1:dbeta]%*%Beta))
+    				  at[t] <- att[t-1]+(1)
+    				  if(is.null(Zt)){
+					    bt[t] <- StaPar[1]*bt[t-1]+(sqrt(2)*abs(Yt[t-1]))*exp((Xt[t-1,1:dbeta]%*%Beta))
+				     # Laplace
+				     jt=t-1 
+				     l[jt] <- lgamma(att[jt]+1) + log(1/sqrt(2)) + att[jt] * log(btt[jt])
+             -lgamma(att[jt])- (1 + att[jt])*(log(sqrt(2)*abs(Yt[jt]) + btt[jt]))
+					    }else{ 
+ 					    if(dteta==0){tt=1}else{tt=1:dteta}
+              bt[t] <- StaPar[1]*bt[t-1]+(sqrt(2)*abs(Yt[t-1]-(Zt[t-1,tt]%*%Teta)))*exp((Xt[t-1,1:dbeta]%*%Beta))
+           # Laplace
+				     jt=t-1 
+		         dteta=dim((Zt))[2]
+              if(dteta==0){tt=1}else{tt=1:dteta}
+             l[jt] <- lgamma(att[jt]+1) + log(1/sqrt(2)) + att[jt] * log(btt[jt])
+             -lgamma(att[jt])- (1 + att[jt])*(log(sqrt(2)*abs(Yt[jt]-(Zt[jt,tt]%*%Teta)) + btt[jt]))
+
+             } 
+					   } #end for t
+					  }
  				   }
            if(model=="GED"){
            if(is.null(Xt)){

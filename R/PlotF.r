@@ -339,29 +339,16 @@ lty=arg[[7]][-1],lwd=arg[[8]][-1],col=arg[[2]][-1],cex=arg[[9]], bty="n")
 if(Proc=="Filter"){
 #Filtering:
 nn=length(Yt)
-if(is.matrix(posts)){
 nsamplex=dim(posts)[1]
-}else{
-nsamplex=100  
-}  
 if(model=="PEM"){nn=length(Break)-1}
 filpar1=matrix(0,nn,nsamplex)
 #samples=1
 #if(is.null(dim(posts))){samples=500}
-if(is.matrix(posts)){
-  for(j in 1:nsamplex){
-    filparaux=FilteringF(StaPar=posts[j,],formula=formula,data=data,model=model,pz=pz,
-                         a0=a0,b0=b0,distl=distl,splot=FALSE)
-    filpar1[,j]=((filparaux[2,]/ filparaux[1,]))
-  }
-}else{
-  for(j in 1:nsamplex){
-    filparaux=FilteringF(StaPar=posts,formula=formula,data=data,model=model,pz=pz,
-                         a0=a0,b0=b0,distl=distl,splot=FALSE)
-    filpar1[,j]=((filparaux[2,]/ filparaux[1,]))
-  }
-} 
-
+for(j in 1:nsamplex){
+filparaux=FilteringF(StaPar=posts[j,],formula=formula,data=data,model=model,pz=pz,
+a0=a0,b0=b0,distl=distl,splot=FALSE)
+filpar1[,j]=((filparaux[2,]/ filparaux[1,]))
+}
 filpar=apply(filpar1,1,mean)
 #filparmedian=apply(filpar1,1,median)]
 print(filparaux)

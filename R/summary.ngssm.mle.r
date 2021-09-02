@@ -4,11 +4,7 @@
 #' @param ... ignored
 #'@noRd
 summary.ngssm.mle<- function(object,...){
-  if(is.matrix(object)){
-   objecta <-object
-  }else{
-    objecta <-object$summary 
-  }
+   objecta <-object$summary
    class(objecta) = "ngssm.mle"
   return(objecta)
 }
